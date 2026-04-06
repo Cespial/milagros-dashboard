@@ -1,110 +1,210 @@
 [
   {
-    "id": "nasa_power",
-    "name": "NASA POWER",
+    "name": "nasa_power",
+    "source": "NASA POWER",
     "category": "meteorologia",
-    "status": "ok",
+    "status": "complete",
     "records": 16527,
-    "size_mb": 4.6,
-    "description": "Meteorología diaria 1981-2026 (11 variables)"
+    "size_mb": 4.6
   },
   {
-    "id": "usgs_comcat",
-    "name": "USGS ComCat Sismicidad",
-    "category": "geologia",
-    "status": "ok",
-    "records": 2183,
-    "size_mb": 2.3,
-    "description": "Catálogo sísmico histórico M≥2.5"
-  },
-  {
-    "id": "sgc_amenaza",
-    "name": "SGC Amenaza Sísmica NSR-10",
-    "category": "geologia",
-    "status": "ok",
-    "records": 10,
-    "size_mb": 0.002,
-    "description": "Parámetros sísmicos Aa/Av por municipio"
-  },
-  {
-    "id": "sgc_simma",
-    "name": "SGC SIMMA — Movimientos en Masa",
-    "category": "geologia",
-    "status": "ok",
-    "records": 42,
-    "size_mb": 0.02,
-    "description": "Inventario de deslizamientos y movimientos en masa"
-  },
-  {
-    "id": "desinventar",
-    "name": "UNGRD Desinventar",
-    "category": "socioeconomico",
-    "status": "ok",
-    "records": 2718,
-    "size_mb": 6.5,
-    "description": "Inventario histórico de desastres 1970-2024"
-  },
-  {
-    "id": "dane_censo",
-    "name": "DANE Censo 2018",
-    "category": "socioeconomico",
-    "status": "ok",
-    "records": 6740,
-    "size_mb": 1.0,
-    "description": "Población por municipio, clase y centro poblado"
-  },
-  {
-    "id": "agronet_eva",
-    "name": "Agronet EVA Agrícola",
-    "category": "socioeconomico",
-    "status": "ok",
-    "records": 1400000,
-    "size_mb": 180.0,
-    "description": "Evaluaciones agropecuarias municipales 1987-2023"
-  },
-  {
-    "id": "gee_dem",
-    "name": "Google Earth Engine — DEM",
-    "category": "teledeteccion",
-    "status": "ok",
-    "records": 3,
-    "size_mb": 45.0,
-    "description": "Modelos digitales de elevación (SRTM/ALOS/Copernicus)"
-  },
-  {
-    "id": "chirps",
-    "name": "CHIRPS Precipitación Anual",
-    "category": "teledeteccion",
-    "status": "ok",
+    "name": "chirps",
+    "source": "CHIRPS v2",
+    "category": "meteorologia",
+    "status": "complete",
     "records": 46,
-    "size_mb": 620.0,
-    "description": "Rasters de precipitación anual 1981-2026"
+    "size_mb": 0.2
   },
   {
-    "id": "sgc_geologia_unidades",
-    "name": "SGC Geología — Unidades",
+    "name": "cds_era5",
+    "source": "ERA5-Land",
+    "category": "meteorologia",
+    "status": "complete",
+    "records": 77,
+    "size_mb": 15
+  },
+  {
+    "name": "open_meteo",
+    "source": "Open-Meteo Weather+Flood",
+    "category": "meteorologia",
+    "status": "complete",
+    "records": 43300,
+    "size_mb": 3.8
+  },
+  {
+    "name": "cmip6",
+    "source": "CMIP6 6 modelos 2025-2100",
+    "category": "meteorologia",
+    "status": "complete",
+    "records": 6,
+    "size_mb": 20
+  },
+  {
+    "name": "worldclim",
+    "source": "WorldClim 8 bioclimaticas",
+    "category": "meteorologia",
+    "status": "complete",
+    "records": 8,
+    "size_mb": 0.01
+  },
+  {
+    "name": "chelsa",
+    "source": "CHELSA v2.1 Climatologia",
+    "category": "meteorologia",
+    "status": "complete",
+    "records": 1,
+    "size_mb": 0.001
+  },
+  {
+    "name": "ideam_dhime",
+    "source": "IDEAM Nivel+Precip Antioquia",
+    "category": "hidrologia",
+    "status": "complete",
+    "records": 9500000,
+    "size_mb": 3800
+  },
+  {
+    "name": "hydrosheds",
+    "source": "HydroSHEDS Subcuencas",
+    "category": "hidrologia",
+    "status": "complete",
+    "records": 23,
+    "size_mb": 450
+  },
+  {
+    "name": "gee_dem",
+    "source": "DEMs 3 fuentes",
+    "category": "geoespacial",
+    "status": "complete",
+    "records": 3,
+    "size_mb": 17
+  },
+  {
+    "name": "gee_sentinel2",
+    "source": "Sentinel-2 NDVI/NDWI 9yr",
+    "category": "teledeteccion",
+    "status": "complete",
+    "records": 18,
+    "size_mb": 250
+  },
+  {
+    "name": "gee_sentinel1",
+    "source": "Sentinel-1 SAR VV+VH 8yr",
+    "category": "teledeteccion",
+    "status": "complete",
+    "records": 16,
+    "size_mb": 430
+  },
+  {
+    "name": "gee_landsat",
+    "source": "Landsat NDVI 13yr",
+    "category": "teledeteccion",
+    "status": "complete",
+    "records": 13,
+    "size_mb": 130
+  },
+  {
+    "name": "sgc_geologia",
+    "source": "SGC Mapa Geologico V2023",
     "category": "geologia",
-    "status": "ok",
-    "records": 32,
-    "size_mb": 1.8,
-    "description": "Unidades geológicas del área de estudio"
+    "status": "complete",
+    "records": 49,
+    "size_mb": 0.15
   },
   {
-    "id": "sgc_geologia_fallas",
-    "name": "SGC Geología — Fallas",
+    "name": "sgc_sismicidad",
+    "source": "SGC/USGS 2183 sismos",
     "category": "geologia",
-    "status": "ok",
-    "records": 17,
-    "size_mb": 0.05,
-    "description": "Fallas geológicas del área de estudio"
+    "status": "complete",
+    "records": 2183,
+    "size_mb": 2.3
   },
   {
-    "id": "runap",
-    "name": "RUNAP — Áreas Protegidas",
+    "name": "sgc_simma",
+    "source": "SGC SIMMA 42 deslizamientos",
+    "category": "geologia",
+    "status": "complete",
+    "records": 42,
+    "size_mb": 0.02
+  },
+  {
+    "name": "sgc_amenaza",
+    "source": "SGC NSR-10 Aa/Av",
+    "category": "geologia",
+    "status": "complete",
+    "records": 10,
+    "size_mb": 0.004
+  },
+  {
+    "name": "desinventar",
+    "source": "UNGRD 2718 emergencias",
+    "category": "geologia",
+    "status": "complete",
+    "records": 2718,
+    "size_mb": 6.5
+  },
+  {
+    "name": "xm_simem",
+    "source": "XM SiMEM Mercado Electrico",
+    "category": "mercado_electrico",
+    "status": "complete",
+    "records": 12334,
+    "size_mb": 1.4
+  },
+  {
+    "name": "dane_censo",
+    "source": "DANE Censo 2018",
+    "category": "socioeconomico",
+    "status": "complete",
+    "records": 10110,
+    "size_mb": 2.7
+  },
+  {
+    "name": "agronet_eva",
+    "source": "AGRONET 1.4M registros",
+    "category": "socioeconomico",
+    "status": "complete",
+    "records": 1410730,
+    "size_mb": 849
+  },
+  {
+    "name": "runap",
+    "source": "RUNAP 21 areas protegidas",
     "category": "biodiversidad",
-    "status": "ok",
+    "status": "complete",
     "records": 21,
-    "size_mb": 0.8,
-    "description": "Registro Único Nacional de Áreas Protegidas"
+    "size_mb": 5
+  },
+  {
+    "name": "mapbiomas",
+    "source": "MapBiomas 26yr cobertura",
+    "category": "biodiversidad",
+    "status": "complete",
+    "records": 26,
+    "size_mb": 7.5
+  },
+  {
+    "name": "gbif_sib",
+    "source": "GBIF 10200 especies",
+    "category": "biodiversidad",
+    "status": "complete",
+    "records": 10200,
+    "size_mb": 4.9
+  },
+  {
+    "name": "global_solar",
+    "source": "Global Solar Atlas Solargis",
+    "category": "solar_eolico",
+    "status": "complete",
+    "records": 1,
+    "size_mb": 0.008
+  },
+  {
+    "name": "global_wind",
+    "source": "Global Wind Atlas",
+    "category": "solar_eolico",
+    "status": "complete",
+    "records": 1,
+    "size_mb": 0.004
   }
 ]
