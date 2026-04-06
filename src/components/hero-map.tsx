@@ -47,7 +47,6 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
   const mapInstance = useRef<any>(null);
   const [activeLayers, setActiveLayers] = useState<Set<string>>(new Set(["aoi"]));
   const [mapReady, setMapReady] = useState(false);
-  const [debugInfo, setDebugInfo] = useState("Initializing...");
 
   useEffect(() => {
     if (!mapContainer.current || mapInstance.current) return;
@@ -55,17 +54,16 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
 
     async function init() {
       try {
-        setDebugInfo("Loading token...");
+        // Load token
         const res = await fetch("/data/mapbox.json");
         const cfg = await res.json();
         const token = cfg.token;
         if (!token || cancelled) return;
 
-        setDebugInfo("Loading Mapbox GL JS from CDN...");
+        // Load Mapbox GL JS from CDN
         const mapboxgl = await loadMapboxFromCDN();
         if (cancelled || !mapContainer.current) return;
 
-        setDebugInfo("Creating map...");
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const mb = mapboxgl as any;
         mb.accessToken = token;
@@ -83,7 +81,6 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
 
         map.on("load", () => {
           if (cancelled) return;
-          setDebugInfo("Map loaded! Adding layers...");
 
           fetch("/data/aoi_boundary.geojson").then((r) => r.json()).then((data: unknown) => {
             map.addSource("aoi", { type: "geojson", data });
@@ -111,14 +108,9 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
           }).catch(() => {});
 
           setMapReady(true);
-          setDebugInfo("");
         });
-
-        map.on("error", (e: { error?: { message?: string } }) => {
-          setDebugInfo(`Map error: ${e.error?.message || JSON.stringify(e)}`);
-        });
-      } catch (err) {
-        setDebugInfo(`INIT ERROR: ${String(err)}`);
+      } catch {
+        // Map initialization failed silently
       }
     }
 
@@ -152,13 +144,6 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
   return (
     <section className="relative h-screen w-full overflow-hidden">
       <div ref={mapContainer} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 1 }} />
-
-      {/* Debug overlay — visible until map loads */}
-      {debugInfo && (
-        <div className="absolute top-20 left-4 z-30 bg-black/90 text-green-400 text-xs px-3 py-2 rounded font-mono max-w-xs">
-          {debugInfo}
-        </div>
-      )}
 
       {/* Top gradient overlay */}
       <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-[#0A0A0A]/80 via-[#0A0A0A]/40 to-transparent px-6 md:px-10 pt-6 pb-24">
