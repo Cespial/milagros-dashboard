@@ -1,6 +1,6 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
-import HeroMapLoader from "@/components/hero-map-loader";
+import HeroMap from "@/components/hero-map";
 import IndicatorsSection from "@/components/indicators-section";
 import DataSourcesTable from "@/components/data-sources-table";
 import RoadmapSection from "@/components/roadmap-section";
@@ -80,7 +80,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-white">
-      <HeroMapLoader indicators={heroIndicators} />
+      <HeroMap indicators={heroIndicators} />
 
       <IndicatorsSection
         precipitacion_media_mm={indicators.precipitacion_media_mm}
