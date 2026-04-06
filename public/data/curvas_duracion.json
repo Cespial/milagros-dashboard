@@ -1,0 +1,78 @@
+[
+  {
+    "exceedance_pct": 5,
+    "caudal_m3s": 6.28
+  },
+  {
+    "exceedance_pct": 10,
+    "caudal_m3s": 5.3
+  },
+  {
+    "exceedance_pct": 15,
+    "caudal_m3s": 4.66
+  },
+  {
+    "exceedance_pct": 20,
+    "caudal_m3s": 4.22
+  },
+  {
+    "exceedance_pct": 25,
+    "caudal_m3s": 3.83
+  },
+  {
+    "exceedance_pct": 30,
+    "caudal_m3s": 3.46
+  },
+  {
+    "exceedance_pct": 35,
+    "caudal_m3s": 3.14
+  },
+  {
+    "exceedance_pct": 40,
+    "caudal_m3s": 2.84
+  },
+  {
+    "exceedance_pct": 45,
+    "caudal_m3s": 2.52
+  },
+  {
+    "exceedance_pct": 50,
+    "caudal_m3s": 2.24
+  },
+  {
+    "exceedance_pct": 55,
+    "caudal_m3s": 2.0
+  },
+  {
+    "exceedance_pct": 60,
+    "caudal_m3s": 1.81
+  },
+  {
+    "exceedance_pct": 65,
+    "caudal_m3s": 1.61
+  },
+  {
+    "exceedance_pct": 70,
+    "caudal_m3s": 1.4
+  },
+  {
+    "exceedance_pct": 75,
+    "caudal_m3s": 1.2
+  },
+  {
+    "exceedance_pct": 80,
+    "caudal_m3s": 1.03
+  },
+  {
+    "exceedance_pct": 85,
+    "caudal_m3s": 0.86
+  },
+  {
+    "exceedance_pct": 90,
+    "caudal_m3s": 0.67
+  },
+  {
+    "exceedance_pct": 95,
+    "caudal_m3s": 0.45
+  }
+]

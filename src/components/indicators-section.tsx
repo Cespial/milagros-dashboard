@@ -1,7 +1,13 @@
 import type { PrecipitationData } from "@/lib/data";
 import AnimatedSection from "./animated-section";
 import PrecipChart from "./precip-chart";
+import FlowDurationChart from "./flow-duration-chart";
 import GlowCard from "./glow-card";
+
+interface FDCPoint {
+  exceedance_pct: number;
+  caudal_m3s: number;
+}
 
 interface Props {
   precipitacion_media_mm: number;
@@ -15,6 +21,7 @@ interface Props {
   potencial_mw_min: number;
   potencial_mw_max: number;
   precipitation: PrecipitationData | null;
+  flowDuration: FDCPoint[] | null;
 }
 
 function Card({
@@ -83,6 +90,20 @@ export default function IndicatorsSection(props: Props) {
               Precipitacion Mensual Promedio
             </h3>
             <PrecipChart data={props.precipitation} />
+          </div>
+        </AnimatedSection>
+      )}
+
+      {props.flowDuration && props.flowDuration.length > 0 && (
+        <AnimatedSection delay={0.3}>
+          <div className="bg-card border border-border rounded-md p-6 mt-6">
+            <p className="font-[family-name:var(--font-mono)] text-[10px] text-muted uppercase tracking-[0.2em] mb-1">
+              Open-Meteo / GloFAS
+            </p>
+            <h3 className="font-[family-name:var(--font-display)] text-lg font-500 text-text mb-5">
+              Curva de Duracion de Caudales
+            </h3>
+            <FlowDurationChart data={props.flowDuration} />
           </div>
         </AnimatedSection>
       )}

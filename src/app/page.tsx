@@ -42,6 +42,11 @@ export default async function Home() {
   const indicators = await loadData<Indicators>("indicators.json", DEFAULT_INDICATORS);
   const ingestion = await loadData<IngestionEntry[]>("ingestion_status.json", []);
   const precipitation = await loadData<PrecipitationData | null>("precipitation.json", null);
+  const flowDuration = await loadData<{ exceedance_pct: number; caudal_m3s: number }[] | null>(
+    "curvas_duracion.json",
+    null,
+  );
+
   const municipios = await loadData<Municipio[]>("municipios.json", [
     { codigo: "05664", nombre: "San Pedro de los Milagros", poblacion: 27898 },
     { codigo: "05264", nombre: "Entrerrios", poblacion: 12513 },
@@ -94,6 +99,7 @@ export default async function Home() {
         potencial_mw_min={indicators.potencial_mw_min}
         potencial_mw_max={indicators.potencial_mw_max}
         precipitation={precipitation}
+        flowDuration={flowDuration}
       />
 
       <DataSourcesTable />
