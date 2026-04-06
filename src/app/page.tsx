@@ -110,34 +110,42 @@ export default async function Home() {
 
       <StudyAreaSection municipios={municipios} />
 
-      <footer className="max-w-7xl mx-auto px-6 py-12 border-t border-gray-200">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-gray-500">
-          <div>
-            <h4 className="font-semibold text-gray-900 mb-2">Arquitectura</h4>
-            <p>
-              Lake Medallion: Bronze (crudo) &rarr; Silver (estandarizado) &rarr; Gold
-              (analitico). Motor: DuckDB + Parquet + GeoParquet + COG GeoTIFF.
-            </p>
+      <footer className="border-t border-border">
+        <div className="max-w-6xl mx-auto px-6 md:px-10 py-14">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-muted mb-10">
+            <div>
+              <h4 className="font-[family-name:var(--font-display)] font-500 text-text mb-2">Arquitectura</h4>
+              <p className="leading-relaxed">
+                Lake Medallion: Bronze (crudo) &rarr; Silver (estandarizado) &rarr; Gold
+                (analitico). Motor: DuckDB + Parquet + GeoParquet + COG GeoTIFF.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-[family-name:var(--font-display)] font-500 text-text mb-2">Stack</h4>
+              <p className="leading-relaxed">
+                Python 3.11, DuckDB, GeoPandas, Rasterio, xarray, GEE, CDS API.
+                Dashboard: Next.js 16, Tailwind, Mapbox GL JS, Recharts.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-[family-name:var(--font-display)] font-500 text-text mb-2">Reproducibilidad</h4>
+              <p className="leading-relaxed">
+                Todo el lake se reconstruye desde codigo + API keys. Datos no se
+                versionan — la reproducibilidad se garantiza por los ingestores.
+              </p>
+            </div>
           </div>
-          <div>
-            <h4 className="font-semibold text-gray-900 mb-2">Stack</h4>
-            <p>
-              Python 3.11, DuckDB, GeoPandas, Rasterio, xarray, GEE, CDS API.
-              Dashboard: Next.js 16, Tailwind, Mapbox GL JS, Recharts.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold text-gray-900 mb-2">Reproducibilidad</h4>
-            <p>
-              Todo el lake se reconstruye desde codigo + API keys. Datos no se
-              versionan — la reproducibilidad se garantiza por los ingestores.
+          <div className="flex items-center justify-between pt-6 border-t border-border">
+            <div className="flex items-center gap-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/isologo-tensor.svg" alt="Tensor" className="h-6" />
+              <span className="text-xs text-muted">Ingenieria de Datos</span>
+            </div>
+            <p className="font-[family-name:var(--font-mono)] text-[10px] text-muted tracking-[0.1em]">
+              tensor.lat
             </p>
           </div>
         </div>
-        <p className="text-xs text-gray-400 mt-8">
-          Central Hidroelectrica Milagros — Lago de datos de prefactibilidad.
-          Codigo: MIT. Datos: cada fuente tiene su propia licencia.
-        </p>
       </footer>
     </main>
   );

@@ -1,4 +1,5 @@
 import type { IngestionEntry } from "@/lib/data";
+import AnimatedSection from "./animated-section";
 
 interface Props {
   entries: IngestionEntry[];
@@ -9,135 +10,95 @@ interface Props {
 }
 
 const CATEGORY_TARGETS: Record<string, number> = {
-  hidrologia: 6,
-  meteorologia: 9,
-  mercado_electrico: 6,
-  geoespacial: 8,
-  teledeteccion: 10,
-  calidad_agua: 5,
-  biodiversidad: 6,
-  geologia: 8,
-  solar_eolico: 5,
-  socioeconomico: 7,
-  infraestructura: 3,
-  regulatorio: 7,
+  hidrologia: 6, meteorologia: 9, mercado_electrico: 6, geoespacial: 8,
+  teledeteccion: 10, calidad_agua: 5, biodiversidad: 6, geologia: 8,
+  solar_eolico: 5, socioeconomico: 7, infraestructura: 3, regulatorio: 7,
 };
 
-function ProgressBar({ value, max, label }: { value: number; max: number; label: string }) {
-  const pct = Math.round((value / max) * 100);
-  return (
-    <div>
-      <div className="flex justify-between text-xs mb-1">
-        <span className="text-gray-600 capitalize">{label.replace("_", " ")}</span>
-        <span className="text-gray-400">
-          {value}/{max}
-        </span>
-      </div>
-      <div className="w-full bg-gray-100 rounded-full h-2">
-        <div
-          className="bg-blue-500 h-2 rounded-full transition-all"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
-    </div>
-  );
-}
-
 const STATUS_BADGE: Record<string, { label: string; cls: string }> = {
-  complete: { label: "OK", cls: "bg-green-100 text-green-700" },
-  failed: { label: "Error", cls: "bg-red-100 text-red-600" },
-  pending: { label: "Pendiente", cls: "bg-yellow-100 text-yellow-700" },
+  complete: { label: "OK", cls: "bg-accent-light text-accent" },
+  failed: { label: "Error", cls: "bg-[#FDECEA] text-[#C0392B]" },
+  pending: { label: "Pendiente", cls: "bg-[#FFF8E1] text-[#B8860B]" },
 };
 
 export default function LakeStatusSection(props: Props) {
-  // Count ingeridos per category
   const byCat: Record<string, number> = {};
   for (const e of props.entries) {
-    if (e.status === "complete") {
-      byCat[e.category] = (byCat[e.category] || 0) + 1;
-    }
+    if (e.status === "complete") byCat[e.category] = (byCat[e.category] || 0) + 1;
   }
 
   return (
-    <section className="max-w-7xl mx-auto px-6 py-16">
-      <h2 className="text-2xl font-bold text-gray-900">Estado del Data Lake</h2>
-      <p className="text-gray-500 mt-1 mb-8">
-        Progreso de ingestion y procesamiento
-      </p>
+    <section className="max-w-6xl mx-auto px-6 md:px-10 py-20 bg-panel">
+      <AnimatedSection>
+        <p className="font-[family-name:var(--font-mono)] text-[11px] text-accent uppercase tracking-[0.2em] mb-2">Pipeline</p>
+        <h2 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl font-600 text-text tracking-[-0.02em]">Estado del Data Lake</h2>
+        <p className="font-[family-name:var(--font-sans)] text-muted mt-2 mb-8">Progreso de ingestion y procesamiento</p>
+      </AnimatedSection>
 
-      {/* Summary cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-        <div className="bg-white border border-gray-200 rounded-2xl p-5">
-          <p className="text-xs text-gray-500 uppercase tracking-wide">Fuentes ingeridas</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">
-            {props.fuentesIngeridas}
-            <span className="text-sm font-normal text-gray-400">/{props.fuentesTotal}</span>
-          </p>
+      <AnimatedSection delay={0.1}>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+          {[
+            { label: "Fuentes ingeridas", value: `${props.fuentesIngeridas}`, sub: `/ ${props.fuentesTotal}` },
+            { label: "Tamano Bronze", value: props.lakeSizeMb >= 1000 ? `${(props.lakeSizeMb / 1000).toFixed(1)}` : `${props.lakeSizeMb}`, sub: props.lakeSizeMb >= 1000 ? "GB" : "MB" },
+            { label: "Archivos", value: `${props.entries.length}`, sub: "datasets" },
+            { label: "Ultima actualizacion", value: props.lastUpdate, sub: "" },
+          ].map((c) => (
+            <div key={c.label} className="bg-card border border-border rounded-md p-5">
+              <p className="font-[family-name:var(--font-mono)] text-[10px] text-muted uppercase tracking-[0.2em]">{c.label}</p>
+              <p className="font-[family-name:var(--font-display)] text-2xl font-600 text-text mt-1">
+                {c.value}<span className="text-sm font-400 text-muted ml-1">{c.sub}</span>
+              </p>
+            </div>
+          ))}
         </div>
-        <div className="bg-white border border-gray-200 rounded-2xl p-5">
-          <p className="text-xs text-gray-500 uppercase tracking-wide">Tamano Bronze</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">
-            {props.lakeSizeMb >= 1000
-              ? `${(props.lakeSizeMb / 1000).toFixed(1)} GB`
-              : `${props.lakeSizeMb} MB`}
-          </p>
-        </div>
-        <div className="bg-white border border-gray-200 rounded-2xl p-5">
-          <p className="text-xs text-gray-500 uppercase tracking-wide">Archivos</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">{props.entries.length}</p>
-        </div>
-        <div className="bg-white border border-gray-200 rounded-2xl p-5">
-          <p className="text-xs text-gray-500 uppercase tracking-wide">Ultima actualizacion</p>
-          <p className="text-2xl font-bold text-gray-900 mt-1">{props.lastUpdate}</p>
-        </div>
-      </div>
+      </AnimatedSection>
 
-      {/* Progress by category */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 mb-10">
-        {Object.entries(CATEGORY_TARGETS).map(([cat, target]) => (
-          <ProgressBar
-            key={cat}
-            label={cat}
-            value={byCat[cat] || 0}
-            max={target}
-          />
-        ))}
-      </div>
+      <AnimatedSection delay={0.15}>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 mb-10">
+          {Object.entries(CATEGORY_TARGETS).map(([cat, target]) => (
+            <div key={cat}>
+              <div className="flex justify-between text-xs mb-1">
+                <span className="text-text-body capitalize font-[family-name:var(--font-sans)]">{cat.replace("_", " ")}</span>
+                <span className="font-[family-name:var(--font-mono)] text-muted">{byCat[cat] || 0}/{target}</span>
+              </div>
+              <div className="w-full bg-border rounded-full h-1.5">
+                <div className="bg-accent h-1.5 rounded-full transition-all" style={{ width: `${Math.round(((byCat[cat] || 0) / target) * 100)}%` }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </AnimatedSection>
 
-      {/* Ingestor table */}
-      <div className="overflow-x-auto border border-gray-200 rounded-2xl">
-        <table className="w-full text-sm">
-          <thead>
-            <tr className="bg-gray-50 text-left text-xs text-gray-500 uppercase tracking-wide">
-              <th className="px-4 py-3 font-medium">Ingestor</th>
-              <th className="px-4 py-3 font-medium">Fuente</th>
-              <th className="px-4 py-3 font-medium">Categoria</th>
-              <th className="px-4 py-3 font-medium">Registros</th>
-              <th className="px-4 py-3 font-medium">Tamano</th>
-              <th className="px-4 py-3 font-medium">Estado</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100">
-            {props.entries.map((e) => {
-              const badge = STATUS_BADGE[e.status] || STATUS_BADGE.pending;
-              return (
-                <tr key={e.name} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 font-mono text-xs text-gray-700">{e.name}</td>
-                  <td className="px-4 py-3 text-gray-900">{e.source}</td>
-                  <td className="px-4 py-3 text-gray-600 capitalize">{e.category.replace("_", " ")}</td>
-                  <td className="px-4 py-3 text-gray-600">{e.records.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-gray-600">{e.size_mb < 1 ? `${Math.round(e.size_mb * 1024)} KB` : `${e.size_mb.toFixed(1)} MB`}</td>
-                  <td className="px-4 py-3">
-                    <span className={`inline-block px-2 py-0.5 rounded-full text-xs font-medium ${badge.cls}`}>
-                      {badge.label}
-                    </span>
-                  </td>
+      {props.entries.length > 0 && (
+        <AnimatedSection delay={0.2}>
+          <div className="overflow-x-auto border border-border rounded-md bg-card">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-border text-left">
+                  {["Ingestor", "Fuente", "Categoria", "Registros", "Tamano", "Estado"].map((h) => (
+                    <th key={h} className="px-4 py-3 font-[family-name:var(--font-mono)] text-[10px] text-muted uppercase tracking-[0.15em]">{h}</th>
+                  ))}
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
+              </thead>
+              <tbody className="divide-y divide-border">
+                {props.entries.map((e) => {
+                  const badge = STATUS_BADGE[e.status] || STATUS_BADGE.pending;
+                  return (
+                    <tr key={e.name} className="hover:bg-card-hover transition-colors duration-300">
+                      <td className="px-4 py-2.5 font-[family-name:var(--font-mono)] text-xs text-text">{e.name}</td>
+                      <td className="px-4 py-2.5 text-text-body">{e.source}</td>
+                      <td className="px-4 py-2.5 text-muted capitalize">{e.category.replace("_", " ")}</td>
+                      <td className="px-4 py-2.5 font-[family-name:var(--font-mono)] text-text-body">{e.records.toLocaleString()}</td>
+                      <td className="px-4 py-2.5 font-[family-name:var(--font-mono)] text-muted">{e.size_mb < 1 ? `${Math.round(e.size_mb * 1024)} KB` : `${e.size_mb.toFixed(1)} MB`}</td>
+                      <td className="px-4 py-2.5"><span className={`inline-block px-2 py-0.5 rounded text-[11px] font-500 ${badge.cls}`}>{badge.label}</span></td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </AnimatedSection>
+      )}
     </section>
   );
 }

@@ -1,140 +1,60 @@
+import AnimatedSection from "./animated-section";
+
 const PHASES = [
-  {
-    number: 1,
-    title: "Infraestructura + Datos Criticos",
-    status: "complete" as const,
-    progress: 100,
-    weeks: "Semanas 1-2",
-    products: [
-      "22 ingestores operativos",
-      "Pipeline Bronze → Silver → Gold",
-      "Balance hidrico, curvas de duracion, potencial de generacion",
-      "Perfil geologico y amenazas naturales",
-      "Linea base ambiental y socioeconomica",
-      "Exports por audiencia (consultores, inversionistas, reguladores)",
-    ],
-  },
-  {
-    number: 2,
-    title: "Datos Complementarios",
-    status: "active" as const,
-    progress: 15,
-    weeks: "Semanas 3-4",
-    products: [
-      "Sentinel-1 SAR (InSAR deformacion)",
-      "Sentinel-2 (indices espectrales 10m)",
-      "CMIP6 (escenarios cambio climatico)",
-      "GBIF biodiversidad detallada",
-      "Global Solar/Wind Atlas",
-      "INVIAS + UPME red electrica",
-    ],
-  },
-  {
-    number: 3,
-    title: "Datos Especializados",
-    status: "pending" as const,
-    progress: 0,
-    weeks: "Semanas 5-6",
-    products: [
-      "Copernicus Water Quality",
-      "ICESat-2 altimetria",
-      "GEDI estructura vegetacion",
-      "NASA LHASA nowcast deslizamientos",
-    ],
-  },
-  {
-    number: 4,
-    title: "Documentos y Regulatorio",
-    status: "pending" as const,
-    progress: 0,
-    weeks: "Continuo",
-    products: [
-      "Expedientes ANLA VITAL",
-      "Resoluciones CREG",
-      "Informes CORANTIOQUIA",
-      "EOT/PBOT San Pedro",
-    ],
-  },
+  { number: 1, title: "Infraestructura + Datos Criticos", status: "complete" as const, progress: 100, weeks: "Semanas 1-2", products: ["22 ingestores operativos", "Pipeline Bronze - Silver - Gold", "Balance hidrico, curvas de duracion", "Perfil geologico y amenazas", "Linea base ambiental", "Exports por audiencia"] },
+  { number: 2, title: "Datos Complementarios", status: "active" as const, progress: 15, weeks: "Semanas 3-4", products: ["Sentinel-1 SAR (InSAR)", "Sentinel-2 (indices 10m)", "CMIP6 cambio climatico", "GBIF biodiversidad", "Solar/Wind Atlas", "INVIAS + UPME red"] },
+  { number: 3, title: "Datos Especializados", status: "pending" as const, progress: 0, weeks: "Semanas 5-6", products: ["Copernicus Water Quality", "ICESat-2 altimetria", "GEDI biomasa", "NASA LHASA deslizamientos"] },
+  { number: 4, title: "Documentos y Regulatorio", status: "pending" as const, progress: 0, weeks: "Continuo", products: ["Expedientes ANLA VITAL", "Resoluciones CREG", "Informes CORANTIOQUIA", "EOT/PBOT San Pedro"] },
 ];
 
-const STATUS_STYLES = {
-  complete: { bar: "bg-green-500", dot: "bg-green-500", text: "text-green-700", badge: "Completada" },
-  active: { bar: "bg-blue-500", dot: "bg-blue-500 animate-pulse", text: "text-blue-700", badge: "En progreso" },
-  pending: { bar: "bg-gray-200", dot: "bg-gray-300", text: "text-gray-400", badge: "Pendiente" },
+const STYLES = {
+  complete: { bar: "bg-accent", dot: "bg-accent", badge: "bg-accent-light text-accent", label: "Completada" },
+  active: { bar: "bg-accent", dot: "bg-accent animate-pulse", badge: "bg-accent-light text-accent", label: "En progreso" },
+  pending: { bar: "bg-border", dot: "bg-border-strong", badge: "bg-panel text-muted", label: "Pendiente" },
 };
 
 export default function RoadmapSection() {
   return (
-    <section className="max-w-7xl mx-auto px-6 py-16 bg-gray-50">
-      <h2 className="text-2xl font-bold text-gray-900">Roadmap</h2>
-      <p className="text-gray-500 mt-1 mb-10">
-        4 fases de construccion del lago de datos
-      </p>
+    <section className="max-w-6xl mx-auto px-6 md:px-10 py-20">
+      <AnimatedSection>
+        <p className="font-[family-name:var(--font-mono)] text-[11px] text-accent uppercase tracking-[0.2em] mb-2">Progreso</p>
+        <h2 className="font-[family-name:var(--font-display)] text-2xl md:text-3xl font-600 text-text tracking-[-0.02em]">Roadmap</h2>
+        <p className="font-[family-name:var(--font-sans)] text-muted mt-2 mb-10">4 fases de construccion del lago de datos</p>
+      </AnimatedSection>
 
-      <div className="space-y-8">
-        {PHASES.map((phase) => {
-          const style = STATUS_STYLES[phase.status];
+      <div className="space-y-5">
+        {PHASES.map((phase, i) => {
+          const style = STYLES[phase.status];
           return (
-            <div
-              key={phase.number}
-              className="bg-white border border-gray-200 rounded-2xl p-6"
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold ${
-                      phase.status === "complete"
-                        ? "bg-green-500"
-                        : phase.status === "active"
-                        ? "bg-blue-500"
-                        : "bg-gray-300"
-                    }`}
-                  >
-                    {phase.number}
+            <AnimatedSection key={phase.number} delay={i * 0.08}>
+              <div className="bg-card border border-border rounded-md p-6 hover:border-border-strong transition-colors duration-500">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className={`w-7 h-7 rounded-md flex items-center justify-center text-xs font-600 ${
+                      phase.status === "pending" ? "bg-panel text-muted" : "bg-accent text-white"
+                    }`}>
+                      {phase.number}
+                    </div>
+                    <div>
+                      <h3 className="font-[family-name:var(--font-display)] font-500 text-text">{phase.title}</h3>
+                      <p className="font-[family-name:var(--font-mono)] text-[10px] text-muted tracking-[0.15em] uppercase">{phase.weeks}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-gray-900">
-                      {phase.title}
-                    </h3>
-                    <p className="text-xs text-gray-500">{phase.weeks}</p>
-                  </div>
+                  <span className={`text-[11px] font-500 px-2.5 py-1 rounded-md ${style.badge}`}>{style.label}</span>
                 </div>
-                <span
-                  className={`text-xs font-medium px-2.5 py-1 rounded-full ${
-                    phase.status === "complete"
-                      ? "bg-green-100 text-green-700"
-                      : phase.status === "active"
-                      ? "bg-blue-100 text-blue-700"
-                      : "bg-gray-100 text-gray-500"
-                  }`}
-                >
-                  {style.badge}
-                </span>
+                <div className="w-full bg-panel rounded-full h-1.5 mb-4">
+                  <div className={`h-1.5 rounded-full transition-all duration-1000 ${style.bar}`} style={{ width: `${phase.progress}%` }} />
+                </div>
+                <ul className="grid grid-cols-1 md:grid-cols-2 gap-1">
+                  {phase.products.map((p) => (
+                    <li key={p} className="flex items-center gap-2 text-sm text-text-body">
+                      <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${style.dot}`} />
+                      {p}
+                    </li>
+                  ))}
+                </ul>
               </div>
-
-              {/* Progress bar */}
-              <div className="w-full bg-gray-100 rounded-full h-2 mb-4">
-                <div
-                  className={`h-2 rounded-full transition-all ${style.bar}`}
-                  style={{ width: `${phase.progress}%` }}
-                />
-              </div>
-
-              {/* Products */}
-              <ul className="grid grid-cols-1 md:grid-cols-2 gap-1.5">
-                {phase.products.map((product) => (
-                  <li
-                    key={product}
-                    className="flex items-center gap-2 text-sm text-gray-600"
-                  >
-                    <span
-                      className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${style.dot}`}
-                    />
-                    {product}
-                  </li>
-                ))}
-              </ul>
-            </div>
+            </AnimatedSection>
           );
         })}
       </div>
