@@ -4,45 +4,62 @@ import { useEffect, useRef, useState } from "react";
 
 export default function TestMapPage() {
   const container = useRef<HTMLDivElement>(null);
-  const [status, setStatus] = useState("1. Loading...");
-  const [error, setError] = useState<string | null>(null);
+  const [log, setLog] = useState<string[]>(["Starting..."]);
+
+  function addLog(msg: string) {
+    setLog((prev) => [...prev, `${new Date().toLocaleTimeString()} ${msg}`]);
+  }
 
   useEffect(() => {
     async function init() {
       try {
-        setStatus("2. Fetching token...");
+        addLog("Fetching token from /data/mapbox.json...");
         const res = await fetch("/data/mapbox.json");
         const cfg = await res.json();
-        const token = cfg.token;
-        setStatus(`3. Token: ${token.slice(0, 20)}...`);
+        addLog(`Token: ${cfg.token.slice(0, 25)}...`);
+
+        addLog("Loading mapbox-gl CSS from CDN...");
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.css";
+        document.head.appendChild(link);
+
+        addLog("Loading mapbox-gl JS from CDN...");
+        await new Promise<void>((resolve, reject) => {
+          const script = document.createElement("script");
+          script.src = "https://api.mapbox.com/mapbox-gl-js/v3.9.4/mapbox-gl.js";
+          script.onload = () => resolve();
+          script.onerror = () => reject(new Error("Script load failed"));
+          document.head.appendChild(script);
+        });
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const mapboxgl = (window as any).mapboxgl;
+        addLog(`mapboxgl loaded: ${typeof mapboxgl}, version: ${mapboxgl?.version}`);
 
         if (!container.current) {
-          setError("Container ref is null");
+          addLog("ERROR: container.current is null");
           return;
         }
 
-        setStatus("4. Importing mapbox-gl...");
-        const mapboxgl = (await import("mapbox-gl")).default;
-        setStatus(`5. mapbox-gl loaded: v${mapboxgl.version || "unknown"}`);
+        const rect = container.current.getBoundingClientRect();
+        addLog(`Container: ${rect.width}x${rect.height} at (${rect.left},${rect.top})`);
 
-        setStatus("6. Creating map...");
+        mapboxgl.accessToken = cfg.token;
+        addLog("Creating map...");
+
         const map = new mapboxgl.Map({
           container: container.current,
-          style: "mapbox://styles/mapbox/dark-v11",
+          style: "mapbox://styles/mapbox/streets-v12",
           center: [-75.525, 6.475],
-          zoom: 10,
-          accessToken: token,
+          zoom: 9,
         });
 
-        map.on("load", () => {
-          setStatus("7. MAP LOADED SUCCESSFULLY");
-        });
-
-        map.on("error", (e) => {
-          setError(`Map error: ${JSON.stringify(e.error || e)}`);
-        });
+        map.on("load", () => addLog("MAP LOADED OK"));
+        map.on("error", (e: unknown) => addLog(`MAP ERROR: ${JSON.stringify(e)}`));
+        map.on("idle", () => addLog("Map idle (rendered)"));
       } catch (err) {
-        setError(`Init error: ${String(err)}`);
+        addLog(`EXCEPTION: ${String(err)}`);
       }
     }
 
@@ -50,28 +67,21 @@ export default function TestMapPage() {
   }, []);
 
   return (
-    <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
-      <div
-        ref={container}
-        style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}
-      />
-      <div
-        style={{
-          position: "absolute",
-          top: 10,
-          left: 10,
-          zIndex: 10,
-          background: "rgba(0,0,0,0.8)",
-          color: "#0f0",
-          padding: "12px 16px",
-          borderRadius: 8,
-          fontFamily: "monospace",
-          fontSize: 14,
-          maxWidth: 400,
-        }}
-      >
-        <p>Status: {status}</p>
-        {error && <p style={{ color: "#f00" }}>ERROR: {error}</p>}
+    <div style={{ width: "100vw", height: "100vh", position: "relative", background: "#111" }}>
+      <div ref={container} style={{ position: "absolute", inset: 0 }} />
+      <div style={{
+        position: "absolute", top: 8, left: 8, zIndex: 999,
+        background: "rgba(0,0,0,0.95)", color: "#0f0",
+        padding: 12, borderRadius: 8, fontFamily: "monospace",
+        fontSize: 12, maxWidth: 500, maxHeight: "50vh", overflow: "auto",
+        border: "1px solid #333",
+      }}>
+        <p style={{ color: "#fff", marginBottom: 8, fontWeight: "bold" }}>Mapbox Debug Log</p>
+        {log.map((l, i) => (
+          <p key={i} style={{ margin: "2px 0", color: l.includes("ERROR") || l.includes("EXCEPTION") ? "#f00" : "#0f0" }}>
+            {l}
+          </p>
+        ))}
       </div>
     </div>
   );
