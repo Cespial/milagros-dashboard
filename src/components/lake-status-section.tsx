@@ -12,7 +12,7 @@ interface Props {
 const CATEGORY_TARGETS: Record<string, number> = {
   meteorologia: 9, geologia: 6, biodiversidad: 6, teledeteccion: 5,
   infraestructura: 4, regulatorio: 4, solar_eolico: 3, socioeconomico: 3,
-  hidrologia: 3, mercado_electrico: 2, geoespacial: 2, calidad_agua: 1,
+  hidrologia: 2, mercado_electrico: 2, geoespacial: 2, calidad_agua: 1,
 };
 
 const STATUS_BADGE: Record<string, { label: string; cls: string }> = {
