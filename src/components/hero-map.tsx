@@ -10,6 +10,7 @@ const LAYERS_CONFIG = [
   { id: "fallas", label: "Fallas", color: "#C0392B" },
   { id: "areas-protegidas", label: "Areas Protegidas", color: "#27AE60" },
   { id: "sismos", label: "Sismos M>3.5", color: "#8E44AD" },
+  { id: "osm-roads", label: "Vias OSM", color: "#D97706" },
 ];
 
 interface Indicator {
@@ -105,6 +106,11 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
           fetch("/data/sismos.geojson").then((r) => r.json()).then((data: unknown) => {
             map.addSource("sismos", { type: "geojson", data });
             map.addLayer({ id: "sismos", type: "circle", source: "sismos", paint: { "circle-radius": ["interpolate", ["linear"], ["get", "mag"], 3.5, 3, 6, 12], "circle-color": "#8E44AD", "circle-opacity": 0.5 }, layout: { visibility: "none" } });
+          }).catch(() => {});
+
+          fetch("/data/osm_roads.geojson").then((r) => r.json()).then((data: unknown) => {
+            map.addSource("osm-roads", { type: "geojson", data });
+            map.addLayer({ id: "osm-roads", type: "line", source: "osm-roads", paint: { "line-color": "#D97706", "line-width": 1.2, "line-opacity": 0.7 }, layout: { visibility: "none" } });
           }).catch(() => {});
 
           setMapReady(true);

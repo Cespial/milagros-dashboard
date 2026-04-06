@@ -2,6 +2,7 @@ import { readFile } from "fs/promises";
 import { join } from "path";
 import HeroMap from "@/components/hero-map";
 import IndicatorsSection from "@/components/indicators-section";
+import ClimateProjections from "@/components/climate-projections";
 import DataSourcesTable from "@/components/data-sources-table";
 import RoadmapSection from "@/components/roadmap-section";
 import LakeStatusSection from "@/components/lake-status-section";
@@ -101,6 +102,8 @@ export default async function Home() {
         precipitation={precipitation}
         flowDuration={flowDuration}
       />
+
+      <ClimateProjections />
 
       <DataSourcesTable />
 

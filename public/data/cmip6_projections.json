@@ -1,0 +1,129 @@
+{
+  "CMCC_CM2_VHR4": [
+    {
+      "decade": "2020s",
+      "temp_mean": 15.3,
+      "precip_annual": 3067.0
+    },
+    {
+      "decade": "2030s",
+      "temp_mean": 15.6,
+      "precip_annual": 3268.0
+    },
+    {
+      "decade": "2040s",
+      "temp_mean": 16.0,
+      "precip_annual": 3224.0
+    },
+    {
+      "decade": "2050s",
+      "temp_mean": 16.5,
+      "precip_annual": 2396.0
+    }
+  ],
+  "EC_Earth3P_HR": [
+    {
+      "decade": "2020s",
+      "temp_mean": 15.3,
+      "precip_annual": 3095.0
+    },
+    {
+      "decade": "2030s",
+      "temp_mean": 15.6,
+      "precip_annual": 3231.0
+    },
+    {
+      "decade": "2040s",
+      "temp_mean": 16.1,
+      "precip_annual": 3187.0
+    }
+  ],
+  "FGOALS_f3_H": [
+    {
+      "decade": "2020s",
+      "temp_mean": 15.4,
+      "precip_annual": 3148.0
+    },
+    {
+      "decade": "2030s",
+      "temp_mean": 15.5,
+      "precip_annual": 3303.0
+    },
+    {
+      "decade": "2040s",
+      "temp_mean": 15.8,
+      "precip_annual": 3296.0
+    },
+    {
+      "decade": "2050s",
+      "temp_mean": 16.1,
+      "precip_annual": 3244.0
+    }
+  ],
+  "HiRAM_SIT_HR": [
+    {
+      "decade": "2020s",
+      "temp_mean": 15.3,
+      "precip_annual": 3248.0
+    },
+    {
+      "decade": "2030s",
+      "temp_mean": 15.6,
+      "precip_annual": 3318.0
+    },
+    {
+      "decade": "2040s",
+      "temp_mean": 16.0,
+      "precip_annual": 3308.0
+    },
+    {
+      "decade": "2050s",
+      "temp_mean": 16.4,
+      "precip_annual": 2197.0
+    }
+  ],
+  "MRI_AGCM3_2_S": [
+    {
+      "decade": "2020s",
+      "temp_mean": 15.3,
+      "precip_annual": 2965.0
+    },
+    {
+      "decade": "2030s",
+      "temp_mean": 15.6,
+      "precip_annual": 2926.0
+    },
+    {
+      "decade": "2040s",
+      "temp_mean": 16.0,
+      "precip_annual": 2880.0
+    },
+    {
+      "decade": "2050s",
+      "temp_mean": 16.6,
+      "precip_annual": 2452.0
+    }
+  ],
+  "NICAM16_8S": [
+    {
+      "decade": "2020s",
+      "temp_mean": 15.2,
+      "precip_annual": 2929.0
+    },
+    {
+      "decade": "2030s",
+      "temp_mean": 15.9,
+      "precip_annual": 2839.0
+    },
+    {
+      "decade": "2040s",
+      "temp_mean": 16.0,
+      "precip_annual": 2937.0
+    },
+    {
+      "decade": "2050s",
+      "temp_mean": 15.7,
+      "precip_annual": 3365.0
+    }
+  ]
+}
