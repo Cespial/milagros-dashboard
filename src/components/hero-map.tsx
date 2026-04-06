@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import mapboxgl from "mapbox-gl";
-import "mapbox-gl/dist/mapbox-gl.css";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 const AOI_CENTER: [number, number] = [-75.525, 6.475];
 
-const LAYERS = [
+const LAYERS_CONFIG = [
   { id: "aoi", label: "Area de Estudio", color: "#1B6B6D" },
   { id: "geologia", label: "Geologia", color: "#D4A853" },
   { id: "fallas", label: "Fallas", color: "#C0392B" },
@@ -22,29 +20,36 @@ interface Indicator {
 
 export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const map = useRef<mapboxgl.Map | null>(null);
+  const mapRef = useRef<unknown>(null);
   const [activeLayers, setActiveLayers] = useState<Set<string>>(new Set(["aoi"]));
-  const [mapLoaded, setMapLoaded] = useState(false);
-  const [tokenLoaded, setTokenLoaded] = useState(false);
+  const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
-    if (!mapContainer.current || map.current) return;
+    if (!mapContainer.current || mapRef.current) return;
 
-    // Load token at runtime from public JSON
-    fetch("/data/mapbox.json")
-      .then((r) => r.json())
-      .then((cfg: { token: string }) => {
-        const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || cfg.token;
-        if (!token) return;
-        setTokenLoaded(true);
-        initMap(token);
-      })
-      .catch(() => {});
+    let cancelled = false;
 
-    function initMap(token: string) {
-      if (!mapContainer.current) return;
+    async function init() {
+      // Dynamic import to avoid SSR issues
+      const mapboxgl = (await import("mapbox-gl")).default;
+      await import("mapbox-gl/dist/mapbox-gl.css");
 
-      map.current = new mapboxgl.Map({
+      if (cancelled || !mapContainer.current) return;
+
+      // Load token at runtime
+      let token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
+      if (!token) {
+        try {
+          const res = await fetch("/data/mapbox.json");
+          const cfg = await res.json();
+          token = cfg.token;
+        } catch {
+          return;
+        }
+      }
+      if (!token || cancelled) return;
+
+      const map = new mapboxgl.Map({
         container: mapContainer.current,
         style: "mapbox://styles/mapbox/dark-v11",
         center: AOI_CENTER,
@@ -53,95 +58,162 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
         attributionControl: false,
       });
 
-    map.current.addControl(new mapboxgl.NavigationControl(), "bottom-right");
+      mapRef.current = map;
 
-    map.current.on("load", () => {
-      const m = map.current!;
+      map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
-      fetch("/data/aoi_boundary.geojson").then((r) => r.json()).then((data) => {
-        m.addSource("aoi", { type: "geojson", data });
-        m.addLayer({
-          id: "aoi", type: "line", source: "aoi",
-          paint: { "line-color": "#1B6B6D", "line-width": 2.5, "line-dasharray": [4, 2] },
-        });
-      }).catch(() => {});
+      map.on("load", () => {
+        // AOI boundary
+        fetch("/data/aoi_boundary.geojson")
+          .then((r) => r.json())
+          .then((data) => {
+            map.addSource("aoi", { type: "geojson", data });
+            map.addLayer({
+              id: "aoi",
+              type: "line",
+              source: "aoi",
+              paint: {
+                "line-color": "#1B6B6D",
+                "line-width": 2.5,
+                "line-dasharray": [4, 2],
+              },
+            });
+          })
+          .catch(() => {});
 
-      fetch("/data/geologia.geojson").then((r) => r.json()).then((data) => {
-        m.addSource("geologia", { type: "geojson", data });
-        m.addLayer({
-          id: "geologia", type: "fill", source: "geologia",
-          paint: { "fill-color": "#D4A853", "fill-opacity": 0.2 },
-          layout: { visibility: "none" },
-        });
-      }).catch(() => {});
+        // Geological units
+        fetch("/data/geologia.geojson")
+          .then((r) => r.json())
+          .then((data) => {
+            map.addSource("geologia", { type: "geojson", data });
+            map.addLayer({
+              id: "geologia",
+              type: "fill",
+              source: "geologia",
+              paint: { "fill-color": "#D4A853", "fill-opacity": 0.2 },
+              layout: { visibility: "none" },
+            });
+          })
+          .catch(() => {});
 
-      fetch("/data/fallas.geojson").then((r) => r.json()).then((data) => {
-        m.addSource("fallas", { type: "geojson", data });
-        m.addLayer({
-          id: "fallas", type: "line", source: "fallas",
-          paint: { "line-color": "#C0392B", "line-width": 2 },
-          layout: { visibility: "none" },
-        });
-      }).catch(() => {});
+        // Faults
+        fetch("/data/fallas.geojson")
+          .then((r) => r.json())
+          .then((data) => {
+            map.addSource("fallas", { type: "geojson", data });
+            map.addLayer({
+              id: "fallas",
+              type: "line",
+              source: "fallas",
+              paint: { "line-color": "#C0392B", "line-width": 2 },
+              layout: { visibility: "none" },
+            });
+          })
+          .catch(() => {});
 
-      fetch("/data/areas_protegidas.geojson").then((r) => r.json()).then((data) => {
-        m.addSource("areas-protegidas", { type: "geojson", data });
-        m.addLayer({
-          id: "areas-protegidas", type: "fill", source: "areas-protegidas",
-          paint: { "fill-color": "#27AE60", "fill-opacity": 0.25 },
-          layout: { visibility: "none" },
-        });
-      }).catch(() => {});
+        // Protected areas
+        fetch("/data/areas_protegidas.geojson")
+          .then((r) => r.json())
+          .then((data) => {
+            map.addSource("areas-protegidas", { type: "geojson", data });
+            map.addLayer({
+              id: "areas-protegidas",
+              type: "fill",
+              source: "areas-protegidas",
+              paint: { "fill-color": "#27AE60", "fill-opacity": 0.25 },
+              layout: { visibility: "none" },
+            });
+          })
+          .catch(() => {});
 
-      fetch("/data/sismos.geojson").then((r) => r.json()).then((data) => {
-        m.addSource("sismos", { type: "geojson", data });
-        m.addLayer({
-          id: "sismos", type: "circle", source: "sismos",
-          paint: {
-            "circle-radius": ["interpolate", ["linear"], ["get", "mag"], 3.5, 3, 6, 12],
-            "circle-color": "#8E44AD", "circle-opacity": 0.5,
-          },
-          layout: { visibility: "none" },
-        });
-      }).catch(() => {});
+        // Earthquakes
+        fetch("/data/sismos.geojson")
+          .then((r) => r.json())
+          .then((data) => {
+            map.addSource("sismos", { type: "geojson", data });
+            map.addLayer({
+              id: "sismos",
+              type: "circle",
+              source: "sismos",
+              paint: {
+                "circle-radius": [
+                  "interpolate",
+                  ["linear"],
+                  ["get", "mag"],
+                  3.5,
+                  3,
+                  6,
+                  12,
+                ],
+                "circle-color": "#8E44AD",
+                "circle-opacity": 0.5,
+              },
+              layout: { visibility: "none" },
+            });
+          })
+          .catch(() => {});
 
-      setMapLoaded(true);
-    });
-    } // end initMap
+        setMapReady(true);
+      });
+    }
 
-    return () => { map.current?.remove(); map.current = null; };
+    init();
+
+    return () => {
+      cancelled = true;
+      if (mapRef.current) {
+        (mapRef.current as { remove: () => void }).remove();
+        mapRef.current = null;
+      }
+    };
   }, []);
 
-  function toggleLayer(layerId: string) {
-    if (!map.current || !mapLoaded) return;
-    const next = new Set(activeLayers);
-    const m = map.current;
-    if (next.has(layerId)) {
-      next.delete(layerId);
-      try { m.setLayoutProperty(layerId, "visibility", "none"); } catch {}
-    } else {
-      next.add(layerId);
-      try { m.setLayoutProperty(layerId, "visibility", "visible"); } catch {}
-    }
-    setActiveLayers(next);
-  }
+  const toggleLayer = useCallback(
+    (layerId: string) => {
+      const map = mapRef.current as {
+        setLayoutProperty: (id: string, prop: string, val: string) => void;
+      } | null;
+      if (!map || !mapReady) return;
+
+      const next = new Set(activeLayers);
+      if (next.has(layerId)) {
+        next.delete(layerId);
+        try {
+          map.setLayoutProperty(layerId, "visibility", "none");
+        } catch {}
+      } else {
+        next.add(layerId);
+        try {
+          map.setLayoutProperty(layerId, "visibility", "visible");
+        } catch {}
+      }
+      setActiveLayers(next);
+    },
+    [activeLayers, mapReady]
+  );
 
   return (
-    <section className="relative h-screen w-full">
-      <div ref={mapContainer} className="absolute inset-0" />
+    <section className="relative h-screen w-full bg-[#0A0A0A]">
+      <div ref={mapContainer} className="absolute inset-0 z-0" />
 
       {/* Top gradient overlay with Tensor branding */}
       <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-[#0A0A0A]/80 via-[#0A0A0A]/40 to-transparent px-6 md:px-10 pt-6 pb-24">
         <div className="flex items-center gap-4 mb-6">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/isologo-tensor.svg" alt="Tensor" className="h-8 invert" />
+          <img
+            src="/isologo-tensor.svg"
+            alt="Tensor"
+            className="h-8 invert"
+          />
           <div className="w-px h-5 bg-white/20" />
           <span className="font-[family-name:var(--font-mono)] text-[11px] text-white/50 tracking-[0.2em] uppercase">
             Prefactibilidad
           </span>
         </div>
-        <h1 className="font-[family-name:var(--font-display)] text-3xl md:text-5xl font-600 text-white tracking-[-0.02em] leading-tight">
-          Central Hidroelectrica<br />Milagros
+        <h1 className="font-[family-name:var(--font-display)] text-3xl md:text-5xl font-semibold text-white tracking-tight leading-tight">
+          Central Hidroelectrica
+          <br />
+          Milagros
         </h1>
         <p className="text-white/50 mt-3 text-sm md:text-base max-w-xl font-[family-name:var(--font-sans)] leading-relaxed">
           San Pedro de los Milagros, norte de Antioquia — Lago de datos con 80+
@@ -159,9 +231,11 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
             <p className="font-[family-name:var(--font-mono)] text-[10px] text-white/40 uppercase tracking-[0.2em]">
               {ind.label}
             </p>
-            <p className="font-[family-name:var(--font-display)] text-xl font-600 text-white mt-0.5">
+            <p className="font-[family-name:var(--font-display)] text-xl font-semibold text-white mt-0.5">
               {ind.value}
-              <span className="text-xs font-400 text-white/40 ml-1">{ind.unit}</span>
+              <span className="text-xs font-normal text-white/40 ml-1">
+                {ind.unit}
+              </span>
             </p>
           </div>
         ))}
@@ -172,7 +246,7 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
         <p className="font-[family-name:var(--font-mono)] text-[10px] text-white/40 uppercase tracking-[0.2em] mb-2">
           Capas
         </p>
-        {LAYERS.map((layer) => (
+        {LAYERS_CONFIG.map((layer) => (
           <button
             key={layer.id}
             onClick={() => toggleLayer(layer.id)}
@@ -185,21 +259,17 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
             <span
               className="w-2 h-2 rounded-full flex-shrink-0 transition-colors duration-500"
               style={{
-                backgroundColor: activeLayers.has(layer.id) ? layer.color : "#333",
+                backgroundColor: activeLayers.has(layer.id)
+                  ? layer.color
+                  : "#333",
               }}
             />
-            <span className="font-[family-name:var(--font-sans)]">{layer.label}</span>
+            <span className="font-[family-name:var(--font-sans)]">
+              {layer.label}
+            </span>
           </button>
         ))}
       </div>
-
-      {!tokenLoaded && !map.current && (
-        <div className="absolute inset-0 bg-[#0A0A0A] flex items-center justify-center">
-          <p className="text-white/30 font-[family-name:var(--font-mono)] text-sm">
-            Cargando mapa...
-          </p>
-        </div>
-      )}
     </section>
   );
 }
