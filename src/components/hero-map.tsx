@@ -30,9 +30,8 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
     let cancelled = false;
 
     async function init() {
-      // Dynamic import to avoid SSR issues
+      // Dynamic import to avoid SSR issues (CSS loaded via globals.css)
       const mapboxgl = (await import("mapbox-gl")).default;
-      await import("mapbox-gl/dist/mapbox-gl.css");
 
       if (cancelled || !mapContainer.current) return;
 
