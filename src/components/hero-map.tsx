@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const MAPBOX_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || "";
 const AOI_CENTER: [number, number] = [-75.525, 6.475];
 
 const LAYERS = [
@@ -26,18 +25,33 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
   const map = useRef<mapboxgl.Map | null>(null);
   const [activeLayers, setActiveLayers] = useState<Set<string>>(new Set(["aoi"]));
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [tokenLoaded, setTokenLoaded] = useState(false);
 
   useEffect(() => {
-    if (!mapContainer.current || map.current || !MAPBOX_TOKEN) return;
+    if (!mapContainer.current || map.current) return;
 
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: "mapbox://styles/mapbox/dark-v11",
-      center: AOI_CENTER,
-      zoom: 10,
-      accessToken: MAPBOX_TOKEN,
-      attributionControl: false,
-    });
+    // Load token at runtime from public JSON
+    fetch("/data/mapbox.json")
+      .then((r) => r.json())
+      .then((cfg: { token: string }) => {
+        const token = process.env.NEXT_PUBLIC_MAPBOX_TOKEN || cfg.token;
+        if (!token) return;
+        setTokenLoaded(true);
+        initMap(token);
+      })
+      .catch(() => {});
+
+    function initMap(token: string) {
+      if (!mapContainer.current) return;
+
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: "mapbox://styles/mapbox/dark-v11",
+        center: AOI_CENTER,
+        zoom: 10,
+        accessToken: token,
+        attributionControl: false,
+      });
 
     map.current.addControl(new mapboxgl.NavigationControl(), "bottom-right");
 
@@ -93,6 +107,7 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
 
       setMapLoaded(true);
     });
+    } // end initMap
 
     return () => { map.current?.remove(); map.current = null; };
   }, []);
@@ -178,10 +193,10 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
         ))}
       </div>
 
-      {!MAPBOX_TOKEN && (
+      {!tokenLoaded && !map.current && (
         <div className="absolute inset-0 bg-[#0A0A0A] flex items-center justify-center">
           <p className="text-white/30 font-[family-name:var(--font-mono)] text-sm">
-            Configura NEXT_PUBLIC_MAPBOX_TOKEN en .env.local
+            Cargando mapa...
           </p>
         </div>
       )}
