@@ -1,0 +1,19 @@
+{
+  "potencial_mw_min": 50,
+  "potencial_mw_max": 800,
+  "caudal_q95_m3s": null,
+  "caudal_medio_m3s": null,
+  "precipitacion_media_mm": 2637.0,
+  "area_estudio_km2": 2750,
+  "zona_sismica": "Intermedia",
+  "aa": 0.15,
+  "av": 0.2,
+  "areas_protegidas_count": 21,
+  "deslizamientos_count": 42,
+  "sismos_count": 2183,
+  "emergencias_count": 2718,
+  "fuentes_ingeridas": 12,
+  "fuentes_total": 80,
+  "lake_size_mb": 895.6,
+  "last_update": "2026-04-05"
+}

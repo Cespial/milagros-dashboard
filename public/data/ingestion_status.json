@@ -1,0 +1,110 @@
+[
+  {
+    "id": "nasa_power",
+    "name": "NASA POWER",
+    "category": "meteorologia",
+    "status": "ok",
+    "records": 16527,
+    "size_mb": 4.6,
+    "description": "Meteorología diaria 1981-2026 (11 variables)"
+  },
+  {
+    "id": "usgs_comcat",
+    "name": "USGS ComCat Sismicidad",
+    "category": "geologia",
+    "status": "ok",
+    "records": 2183,
+    "size_mb": 2.3,
+    "description": "Catálogo sísmico histórico M≥2.5"
+  },
+  {
+    "id": "sgc_amenaza",
+    "name": "SGC Amenaza Sísmica NSR-10",
+    "category": "geologia",
+    "status": "ok",
+    "records": 10,
+    "size_mb": 0.002,
+    "description": "Parámetros sísmicos Aa/Av por municipio"
+  },
+  {
+    "id": "sgc_simma",
+    "name": "SGC SIMMA — Movimientos en Masa",
+    "category": "geologia",
+    "status": "ok",
+    "records": 42,
+    "size_mb": 0.02,
+    "description": "Inventario de deslizamientos y movimientos en masa"
+  },
+  {
+    "id": "desinventar",
+    "name": "UNGRD Desinventar",
+    "category": "socioeconomico",
+    "status": "ok",
+    "records": 2718,
+    "size_mb": 6.5,
+    "description": "Inventario histórico de desastres 1970-2024"
+  },
+  {
+    "id": "dane_censo",
+    "name": "DANE Censo 2018",
+    "category": "socioeconomico",
+    "status": "ok",
+    "records": 6740,
+    "size_mb": 1.0,
+    "description": "Población por municipio, clase y centro poblado"
+  },
+  {
+    "id": "agronet_eva",
+    "name": "Agronet EVA Agrícola",
+    "category": "socioeconomico",
+    "status": "ok",
+    "records": 1400000,
+    "size_mb": 180.0,
+    "description": "Evaluaciones agropecuarias municipales 1987-2023"
+  },
+  {
+    "id": "gee_dem",
+    "name": "Google Earth Engine — DEM",
+    "category": "teledeteccion",
+    "status": "ok",
+    "records": 3,
+    "size_mb": 45.0,
+    "description": "Modelos digitales de elevación (SRTM/ALOS/Copernicus)"
+  },
+  {
+    "id": "chirps",
+    "name": "CHIRPS Precipitación Anual",
+    "category": "teledeteccion",
+    "status": "ok",
+    "records": 46,
+    "size_mb": 620.0,
+    "description": "Rasters de precipitación anual 1981-2026"
+  },
+  {
+    "id": "sgc_geologia_unidades",
+    "name": "SGC Geología — Unidades",
+    "category": "geologia",
+    "status": "ok",
+    "records": 32,
+    "size_mb": 1.8,
+    "description": "Unidades geológicas del área de estudio"
+  },
+  {
+    "id": "sgc_geologia_fallas",
+    "name": "SGC Geología — Fallas",
+    "category": "geologia",
+    "status": "ok",
+    "records": 17,
+    "size_mb": 0.05,
+    "description": "Fallas geológicas del área de estudio"
+  },
+  {
+    "id": "runap",
+    "name": "RUNAP — Áreas Protegidas",
+    "category": "biodiversidad",
+    "status": "ok",
+    "records": 21,
+    "size_mb": 0.8,
+    "description": "Registro Único Nacional de Áreas Protegidas"
+  }
+]
