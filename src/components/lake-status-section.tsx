@@ -10,9 +10,9 @@ interface Props {
 }
 
 const CATEGORY_TARGETS: Record<string, number> = {
-  hidrologia: 6, meteorologia: 9, mercado_electrico: 6, geoespacial: 8,
-  teledeteccion: 10, calidad_agua: 5, biodiversidad: 6, geologia: 8,
-  solar_eolico: 5, socioeconomico: 7, infraestructura: 3, regulatorio: 7,
+  meteorologia: 9, geologia: 6, biodiversidad: 6, teledeteccion: 5,
+  infraestructura: 4, regulatorio: 4, solar_eolico: 3, socioeconomico: 3,
+  hidrologia: 3, mercado_electrico: 2, geoespacial: 2, calidad_agua: 1,
 };
 
 const STATUS_BADGE: Record<string, { label: string; cls: string }> = {
