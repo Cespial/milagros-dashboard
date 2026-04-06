@@ -150,18 +150,18 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
   );
 
   return (
-    <section className="relative h-screen w-full bg-[#0A0A0A]">
-      <div ref={mapContainer} className="absolute inset-0 z-0" />
+    <section className="relative h-screen w-full overflow-hidden">
+      <div ref={mapContainer} style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", zIndex: 1 }} />
 
       {/* Debug overlay — visible until map loads */}
       {debugInfo && (
-        <div className="absolute top-20 left-4 z-20 bg-black/90 text-green-400 text-xs px-3 py-2 rounded font-mono max-w-xs">
+        <div className="absolute top-20 left-4 z-30 bg-black/90 text-green-400 text-xs px-3 py-2 rounded font-mono max-w-xs">
           {debugInfo}
         </div>
       )}
 
       {/* Top gradient overlay */}
-      <div className="absolute top-0 left-0 right-0 z-10 bg-gradient-to-b from-[#0A0A0A]/80 via-[#0A0A0A]/40 to-transparent px-6 md:px-10 pt-6 pb-24">
+      <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-[#0A0A0A]/80 via-[#0A0A0A]/40 to-transparent px-6 md:px-10 pt-6 pb-24">
         <div className="flex items-center gap-4 mb-6">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/isologo-tensor.svg" alt="Tensor" className="h-8 invert" />
@@ -177,7 +177,7 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
       </div>
 
       {/* Indicator cards */}
-      <div className="absolute bottom-6 left-6 right-6 z-10 flex flex-wrap gap-3">
+      <div className="absolute bottom-6 left-6 right-6 z-20 flex flex-wrap gap-3">
         {indicators.map((ind) => (
           <div key={ind.label} className="bg-[#0A0A0A]/70 backdrop-blur-md border border-white/[0.08] rounded-md px-4 py-3 min-w-[140px]">
             <p className="font-[family-name:var(--font-mono)] text-[10px] text-white/40 uppercase tracking-[0.2em]">{ind.label}</p>
@@ -189,7 +189,7 @@ export default function HeroMap({ indicators }: { indicators: Indicator[] }) {
       </div>
 
       {/* Layer panel */}
-      <div className="absolute top-32 right-4 z-10 bg-[#0A0A0A]/70 backdrop-blur-md border border-white/[0.08] rounded-md p-3 space-y-1">
+      <div className="absolute top-32 right-4 z-20 bg-[#0A0A0A]/70 backdrop-blur-md border border-white/[0.08] rounded-md p-3 space-y-1">
         <p className="font-[family-name:var(--font-mono)] text-[10px] text-white/40 uppercase tracking-[0.2em] mb-2">Capas</p>
         {LAYERS_CONFIG.map((layer) => (
           <button key={layer.id} onClick={() => toggleLayer(layer.id)}
