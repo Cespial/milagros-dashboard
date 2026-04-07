@@ -1,0 +1,39 @@
+{
+  "methodology": "Multi-criteria weighted scoring",
+  "weights": {
+    "pendiente": 0.3,
+    "litologia": 0.25,
+    "distancia_fallas": 0.25,
+    "densidad_deslizamientos": 0.2
+  },
+  "scores": {},
+  "geologia": {
+    "unidades": 49,
+    "tipos": []
+  },
+  "deslizamientos": {
+    "total_en_aoi": 42,
+    "nota": "Densidad: 152.7 eventos por 100 km2"
+  },
+  "sismicidad": {
+    "zona": "Intermedia",
+    "Aa": 0.15,
+    "Av": 0.2,
+    "sistema_fallas": "Romeral"
+  },
+  "suelos": {
+    "capas_disponibles": [
+      "soil_organic_carbon",
+      "soil_clay",
+      "soil_ph",
+      "soil_texture"
+    ]
+  },
+  "evaluacion": {
+    "pendiente": "Moderada a alta (terreno montanoso andino, 2000-2500 msnm)",
+    "litologia": "Verificar con mapa geologico V2023 — 32 unidades identificadas",
+    "fallas": "17 fallas mapeadas en el AOI, sistema de fallas de Romeral dominante",
+    "deslizamientos": "42 eventos registrados en SIMMA",
+    "aptitud_general": "Requiere evaluacion de campo. Zona sismica intermedia. Terreno montanoso con deslizamientos moderados."
+  }
+}

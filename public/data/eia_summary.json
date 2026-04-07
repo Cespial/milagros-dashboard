@@ -1,0 +1,24 @@
+{
+  "chapters": [
+    {
+      "name": "Medio Abiotico",
+      "sections": 5,
+      "data_sources": 12,
+      "file": "eia_abiotico.md"
+    },
+    {
+      "name": "Medio Biotico",
+      "sections": 4,
+      "data_sources": 8,
+      "file": "eia_biotico.md"
+    },
+    {
+      "name": "Medio Socioeconomico",
+      "sections": 4,
+      "data_sources": 7,
+      "file": "eia_socioeconomico.md"
+    }
+  ],
+  "total_data_sources": 27,
+  "status": "Borrador generado automaticamente — requiere revision por consultores"
+}

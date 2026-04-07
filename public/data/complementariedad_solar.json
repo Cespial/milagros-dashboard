@@ -1,0 +1,104 @@
+{
+  "monthly_comparison": [
+    {
+      "month": 1,
+      "month_name": "Ene",
+      "ghi_kwh_m2_day": 4.72,
+      "discharge_m3s": 1.762,
+      "complementarity": "alta"
+    },
+    {
+      "month": 2,
+      "month_name": "Feb",
+      "ghi_kwh_m2_day": 4.73,
+      "discharge_m3s": 1.532,
+      "complementarity": "alta"
+    },
+    {
+      "month": 3,
+      "month_name": "Mar",
+      "ghi_kwh_m2_day": 4.65,
+      "discharge_m3s": 2.728,
+      "complementarity": "media"
+    },
+    {
+      "month": 4,
+      "month_name": "Abr",
+      "ghi_kwh_m2_day": 4.66,
+      "discharge_m3s": 4.429,
+      "complementarity": "media"
+    },
+    {
+      "month": 5,
+      "month_name": "May",
+      "ghi_kwh_m2_day": 4.92,
+      "discharge_m3s": 4.801,
+      "complementarity": "media"
+    },
+    {
+      "month": 6,
+      "month_name": "Jun",
+      "ghi_kwh_m2_day": 5.18,
+      "discharge_m3s": 2.924,
+      "complementarity": "media"
+    },
+    {
+      "month": 7,
+      "month_name": "Jul",
+      "ghi_kwh_m2_day": 5.49,
+      "discharge_m3s": 1.428,
+      "complementarity": "alta"
+    },
+    {
+      "month": 8,
+      "month_name": "Ago",
+      "ghi_kwh_m2_day": 5.49,
+      "discharge_m3s": 1.025,
+      "complementarity": "alta"
+    },
+    {
+      "month": 9,
+      "month_name": "Sep",
+      "ghi_kwh_m2_day": 5.27,
+      "discharge_m3s": 1.361,
+      "complementarity": "alta"
+    },
+    {
+      "month": 10,
+      "month_name": "Oct",
+      "ghi_kwh_m2_day": 4.71,
+      "discharge_m3s": 2.665,
+      "complementarity": "media"
+    },
+    {
+      "month": 11,
+      "month_name": "Nov",
+      "ghi_kwh_m2_day": 4.43,
+      "discharge_m3s": 4.31,
+      "complementarity": "media"
+    },
+    {
+      "month": 12,
+      "month_name": "Dic",
+      "ghi_kwh_m2_day": 4.49,
+      "discharge_m3s": 3.256,
+      "complementarity": "media"
+    }
+  ],
+  "summary": {
+    "ghi_annual_avg": 4.9,
+    "pvout_estimated_kwh_kwp_day": 4.16,
+    "discharge_annual_avg": 2.685,
+    "best_solar_months": [
+      "Jul",
+      "Ago",
+      "Sep"
+    ],
+    "best_hydro_months": [
+      "May",
+      "Abr",
+      "Nov"
+    ],
+    "complementarity_note": "Meses de bajo caudal (Dic-Feb) coinciden con alta radiacion solar — buena complementariedad estacional"
+  }
+}
